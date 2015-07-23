@@ -7,14 +7,14 @@ var reload      = browserSync.reload;
 
 var src = {
     scss: 'app/scss/*.scss',
-    html: 'app/*.html'
+    html: 'app/**/*.html',
+    partials: '!app/partials/*.html'
 };
 
 var dist = {
     css:  'dist/css',
     html: 'dist'
 };
-
 
 // Static Server + watching scss/html files
 gulp.task('serve', ['sass'], function() {
@@ -24,17 +24,20 @@ gulp.task('serve', ['sass'], function() {
     });
 
     gulp.watch(src.scss, ['sass']);
-    gulp.watch(src.html, ['templates']);
+    gulp.watch(src.html, ['html']);
 });
 
 // Swig templates
-gulp.task('templates', function() {
-  gulp.src(src.html)
-      .pipe(frontMatter({ property: 'data' }))
-      .pipe(swig())
-      .pipe(gulp.dest(dist.html))
-      .on("end", reload);
+gulp.task('html', function(){
+    gulp.src([src.html, src.partials])
+    .pipe(frontMatter({ property: 'data' }))
+    .pipe(swig({ 
+      defaults: { cache: false } 
+     }))
+    .pipe(gulp.dest(dist.html))
+    .pipe(reload({stream:true}));
 });
+
 
 gulp.task('sass', function() {
     return gulp.src(src.scss)

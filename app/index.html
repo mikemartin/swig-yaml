@@ -11,11 +11,15 @@ todos:
         <link rel="stylesheet" href="css/app.css">
     </head>
     <body>
-        <h1>{{ title }}</h1>
-        <ul>{% for todo in todos %}
-          <li>{{ todo }}</li>
-        {% endfor %}</ul>
+        {% include "./partials/partial.html" %}
     </body>
+
 </html>
+
+
+
+
+
+
 
 
